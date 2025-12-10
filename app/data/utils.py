@@ -11,6 +11,12 @@ TESTS = "https://w3id.org/everse/i/indicators/software_has_tests"
 REQUIREMENTS = "https://w3id.org/everse/i/indicators/requirements_specified"
 METADATA = "https://w3id.org/everse/i/indicators/descriptive_metadata"
 
+RSFC_BENCHMARK_ID = "https://w3id.org/rsfc/benchmark/FAIR4RS"
+
+BENCHMARK_IDENTIFIERS = [
+    RSFC_BENCHMARK_ID
+]
+
 
 RSFC_01_1 = "https://w3id.org/rsfc/test/RSFC-01-1"
 RSFC_01_2 = "https://w3id.org/rsfc/test/RSFC-01-2"
