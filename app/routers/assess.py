@@ -3,14 +3,13 @@ from typing import Optional
 from models import ResourceAssessmentRequest
 from data import utils
 from helpers import docker_executor
-from helpers.fetcher import fetch_json
 
 router = APIRouter(prefix="/assess", tags=["api-controller"])
 
-@router.get("/{test_id}")
+@router.post("/{test_id}")
 async def post_test_assessment(test_id: str = Path(..., description="Identifier of the test to run"), body: ResourceAssessmentRequest = ...):
 
-    if test_id not in utils.TEST_IDENTIFIERS:
+    if test_id != None and test_id not in utils.TEST_IDENTIFIERS:
         raise HTTPException(status_code=400, detail="Test ID not valid")
     
     resource_id = body.resource_identifier

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 from data import utils
 from helpers.fetcher import fetch_json
@@ -6,10 +6,12 @@ from helpers.fetcher import fetch_json
 
 router = APIRouter(prefix="/metrics", tags=["api-controller"])
 
-@router.get("/{metric_id}")
-async def get_metric(metric_id: Optional[str] = Path(None, description="Metric ID to fetch (optional)")):
+
+
+@router.get("/")
+async def get_metric(metric_id: Optional[str] = Query(None, description="Metric ID to fetch")):
     
-    if metric_id is None:
+    if metric_id == None:
         return utils.METRIC_IDENTIFIERS
 
     if metric_id not in utils.METRIC_IDENTIFIERS:

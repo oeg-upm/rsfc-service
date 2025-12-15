@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Query, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
 from data import utils
 from helpers.fetcher import fetch_json
 
 router = APIRouter(prefix="/benchmarks", tags=["api-controller"])
 
-@router.get("/{benchmark_id}")
-async def get_benchmark(benchmark_id: Optional[str] = Path(None, description="Benchmark ID to fetch (optional)")):
+
+@router.get("/")
+async def get_benchmark(benchmark_id: Optional[str] = Query(None, description="Benchmark ID")):
     
-    if benchmark_id is None:
+    if benchmark_id == None:
         return utils.BENCHMARK_IDENTIFIERS
 
     if benchmark_id not in utils.BENCHMARK_IDENTIFIERS:

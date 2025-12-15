@@ -1,23 +1,56 @@
-#Debe pullear la imagen de dockerhub y despues correrla (fijarse en resqui)
+import subprocess
+from data import utils
+import tempfile
+import os
+import json
 
-import docker
 
-client = docker.from_env()
+async def pull_docker_image():
 
-def docker_executor(url: str, test_id: str = None):
-
-    command = f"--url {url}"
-    if test_id:
-        command += f" --test_id {test_id}"
+    print("Pulling RSFC Docker image")
     
-    # Lanza el contenedor
-    container = client.containers.run(
-        "nombre_de_tu_imagen_docker",
-        command=command,
-        detach=True,
-        remove=True
+    subprocess.run(
+        ["docker", "pull", utils.RSFC_DOCKER_IMAGE],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
     )
+
+    print("Image pulled succesfully")
+
+
+async def run_assessment(resource_identifier):
     
-    # Espera a que termine y recoge logs
-    result = container.logs(stdout=True, stderr=True)
-    return result.decode('utf-8')
+    print("Running RSFC container")
+    
+    tempdir = tempfile.mkdtemp()
+
+    try:
+
+        cmd = [
+            "docker",
+            "run",
+            "--rm",
+            "-v", f"{tempdir}:/rsfc/rsfc_output",
+            utils.RSFC_DOCKER_IMAGE,
+            "--repo",
+            resource_identifier,
+            "--ftr"
+        ]
+
+        subprocess.run(cmd, capture_output=True, text=True)
+        
+        files = os.listdir(tempdir)
+        if len(files) != 1:
+            print("Error: RSFC did not generate any output files")
+            raise
+
+        report_path = os.path.join(tempdir, files[0])
+        with open(report_path) as f:
+            report = json.load(f)
+        
+        return report
+
+
+    except Exception as e:
+        raise Exception(f"Error while running the container: {e}")

@@ -1,3 +1,5 @@
+RSFC_DOCKER_IMAGE = "docker.io/amonterodx/rsfc:0.0.7"
+
 PERSISTENT_ID = "https://w3id.org/everse/i/indicators/persistent_and_unique_identifier"
 HAS_RELEASES = "https://w3id.org/everse/i/indicators/has_releases"
 SOFT_HERITAGE = "https://w3id.org/everse/i/indicators/archived_in_software_heritage"

@@ -11,7 +11,11 @@ async def lifespan(app: FastAPI):
     #Startup
     print("Initializing app...")
 
-    await docker_executor.pull_docker_image()
+    try:
+        await docker_executor.pull_docker_image()
+    except Exception:
+        print("Error pulling docker image")
+        raise
 
     print("App initialized correctly.")
     yield
@@ -27,7 +31,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(benchmarks.router, prefix="/benchmarks", tags=["api-controller"])
-app.include_router(metrics.router, prefix="/metrics", tags=["api-controller"])
-app.include_router(tests.router, prefix="/tests", tags=["api-controller"])
-app.include_router(assess.router, prefix="/assess", tags=["api-controller"])
+app.include_router(benchmarks.router, tags=["api-controller"])
+app.include_router(metrics.router, tags=["api-controller"])
+app.include_router(tests.router, tags=["api-controller"])
+app.include_router(assess.router, tags=["api-controller"])
