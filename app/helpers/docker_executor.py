@@ -19,7 +19,7 @@ async def pull_docker_image():
     print("Image pulled succesfully")
 
 
-async def run_assessment(resource_identifier):
+async def run_assessment(resource_identifier, test_id):
     
     print("Running RSFC container")
     
@@ -37,6 +37,9 @@ async def run_assessment(resource_identifier):
             resource_identifier,
             "--ftr"
         ]
+        
+        if test_id != None:
+            cmd.extend(["--id", test_id])
 
         subprocess.run(cmd, capture_output=True, text=True)
         
