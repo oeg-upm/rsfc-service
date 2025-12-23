@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from routers import benchmarks, metrics, tests, assess
-from helpers import docker_executor
+from app.routers import benchmarks, metrics, tests, assess
+from app.helpers import docker_executor
 
 
 @asynccontextmanager

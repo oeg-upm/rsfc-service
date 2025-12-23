@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, HTTPException
 from typing import Optional
-from data import utils
-from helpers.fetcher import fetch_json
+from app.data import utils
+from app.helpers.fetcher import fetch_json
 
 
 router = APIRouter(prefix="/tests", tags=["api-controller"])
