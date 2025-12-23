@@ -9,7 +9,7 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/andriumon/rsfc-service.git .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
 
