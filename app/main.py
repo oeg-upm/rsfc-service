@@ -5,21 +5,22 @@ from app.routers import benchmarks, metrics, tests, assess
 from app.helpers import docker_executor
 
 
+async def initialize_services():
+    try:
+        await docker_executor.pull_docker_image()
+    except Exception as e:
+        print(f"Error initializing services: {e}")
+        raise
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
 
     #Startup
     print("Initializing app...")
-
-    try:
-        await docker_executor.pull_docker_image()
-    except Exception:
-        print("Error pulling docker image")
-        raise
-
+    await initialize_services()
     print("App initialized correctly.")
     yield
-
     #Shutdown
     print("Closing app...")
 
@@ -31,7 +32,6 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.include_router(benchmarks.router, tags=["api-controller"])
-app.include_router(metrics.router, tags=["api-controller"])
-app.include_router(tests.router, tags=["api-controller"])
-app.include_router(assess.router, tags=["api-controller"])
+# Loop to add every router
+for router in [benchmarks, metrics, tests, assess]:
+    app.include_router(router.router)

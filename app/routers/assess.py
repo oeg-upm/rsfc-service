@@ -9,6 +9,9 @@ router = APIRouter(prefix="/assess", tags=["api-controller"])
 
 @router.post("/")
 async def post_assessment(body: ResourceAssessmentRequest, test_id: Optional[str] = Query(None, description="Identifier of the test to run")):
+    
+    if not body.resource_identifier:
+        raise HTTPException(status_code=400, detail="Resource_identifier is required")
 
     if test_id is not None and test_id not in utils.TEST_IDENTIFIERS:
         raise HTTPException(status_code=400, detail="Test ID not valid")
