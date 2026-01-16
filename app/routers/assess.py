@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Query, HTTPException
-from typing import Optional
+from fastapi import APIRouter, Path, HTTPException
 from app.models import ResourceAssessmentRequest
 from app.data import utils
 from app.helpers import docker_executor
@@ -7,20 +6,12 @@ from app.helpers import docker_executor
 router = APIRouter(prefix="/assess", tags=["api-controller"])
 
 
-@router.post("/")
-async def post_assessment(body: ResourceAssessmentRequest, test_id: Optional[str] = Query(None, description="Identifier of the test to run")):
-    
-    if not body.resource_identifier:
-        raise HTTPException(status_code=400, detail="Resource_identifier is required")
-
-    if test_id is not None and test_id not in utils.TEST_IDENTIFIERS:
-        raise HTTPException(status_code=400, detail="Test ID not valid")
-
-    resource_id = body.resource_identifier
+@router.post("/test/{test_identifier:path}")
+async def post_test_assessment(test_identifier: str = Path(..., description="Identifier of the test to run"), body: ResourceAssessmentRequest = ...):
+    if test_identifier not in utils.TEST_IDENTIFIERS:
+        raise HTTPException(status_code=404, detail="Test not found")
 
     try:
-        result = await docker_executor.run_assessment(resource_id, test_id)
-        return result
-
+        return await docker_executor.run_assessment(body.resource_identifier, test_identifier)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

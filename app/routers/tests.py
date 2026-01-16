@@ -7,13 +7,13 @@ from app.helpers.fetcher import fetch_json
 router = APIRouter(prefix="/tests", tags=["api-controller"])
 
 
-@router.get("/")
-async def get_test(test_id: Optional[str] = Query(None, description="Test ID to fetch (optional)")):
+@router.get("")
+async def get_test(testid: Optional[str] = Query(None, description="Test ID to fetch (optional)")):
 
-    if test_id == None:
+    if testid == None:
         return utils.TEST_IDENTIFIERS
 
-    if test_id not in utils.TEST_IDENTIFIERS:
-        raise HTTPException(status_code=400, detail="Test ID not valid")
+    if testid not in utils.TEST_IDENTIFIERS:
+        raise HTTPException(status_code=404, detail="Test not found")
 
-    return await fetch_json(test_id)
+    return await fetch_json(testid)

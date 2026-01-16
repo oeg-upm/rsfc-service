@@ -8,13 +8,13 @@ router = APIRouter(prefix="/metrics", tags=["api-controller"])
 
 
 
-@router.get("/")
-async def get_metric(metric_id: Optional[str] = Query(None, description="Metric ID to fetch")):
+@router.get("")
+async def get_metric(metricid: Optional[str] = Query(None, description="Metric ID to fetch")):
     
-    if metric_id == None:
+    if metricid == None:
         return utils.METRIC_IDENTIFIERS
 
-    if metric_id not in utils.METRIC_IDENTIFIERS:
-        raise HTTPException(status_code=400, detail="Metric ID not valid")
+    if metricid not in utils.METRIC_IDENTIFIERS:
+        raise HTTPException(status_code=404, detail="Metric not found")
 
-    return await fetch_json(metric_id)
+    return await fetch_json(metricid)
