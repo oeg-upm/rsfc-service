@@ -1,4 +1,4 @@
-RSFC_DOCKER_IMAGE = "docker.io/amonterodx/rsfc:0.0.7"
+RSFC_DOCKER_IMAGE = "docker.io/amonterodx/rsfc:0.1.0"
 
 PERSISTENT_ID = "https://w3id.org/everse/i/indicators/persistent_and_unique_identifier"
 HAS_RELEASES = "https://w3id.org/everse/i/indicators/has_releases"
