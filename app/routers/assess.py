@@ -18,6 +18,12 @@ async def post_test_assessment(test_identifier: str = Path(..., description="Ide
 
 
 @router.get("/test/{test_identifier:path}")
-async def get_test_assessment(test_identifier: str = Path(..., description="Dummy method for browser petition"), body: ResourceAssessmentRequest = ...):
-    msg = "Please send a POST request. Example: curl -X POST \"http://localhost:8000/assess/test/RSFC-13-1\" -H \"Content-Type: application/json\" -d '{\"resource_identifier\": \"https://github.com/oeg-upm/rsfc\"}'"
-    return await msg
+async def get_test_assessment(
+    test_identifier: str = Path(..., description="Dummy method for browser GET petition")
+):
+    return {
+        "message": "This endpoint only accepts POST requests.",
+        "example": "curl -X POST \"https://rsfc.linkeddata.es/assess/test/RSFC-13-1\" "
+                   "-H \"Content-Type: application/json\" "
+                   "-d '{\"resource_identifier\": \"https://github.com/oeg-upm/rsfc\"}'"
+    }
