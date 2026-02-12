@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Path, HTTPException, Header
 from app.models import ResourceAssessmentRequest
 from app.data import utils
-from app.helpers import docker_executor
+from app.helpers import docker_executor, render_template
 
 router = APIRouter(prefix="/assess", tags=["api-controller"])
 
@@ -60,6 +60,10 @@ async def post_test_assessment(body: ResourceAssessmentRequest = ..., authorizat
 
         score = passed_tests / total_tests
         
-        return 
+        log = f"Since you passed {passed_tests}/{total_tests} tests, your score is {score}"
+        
+        benchmark_id = utils.RSFC_BENCHMARK_ID
+        
+        return render_template.render_benchmark_score(benchmark_id=benchmark_id, score=score, log=log)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
