@@ -27,7 +27,7 @@ git clone https://github.com/oeg-upm/rsfc-service.git
 
 ## Usage
 
-**Note**: We have an available service deployed online that accepts requests. To use it, just change the http://localhost:8000 url for https://rsfc.linkeddata.es
+**Note**: We have an [available service](https://rsfc.linkeddata.es/docs) deployed online that accepts requests. To use it, just change the http://localhost:8000 url for https://rsfc.linkeddata.es
 
 Preferably in a virtual environment and in the root directory of the project, run the following to run the app:
 
