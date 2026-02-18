@@ -27,6 +27,8 @@ git clone https://github.com/oeg-upm/rsfc-service.git
 
 ## Usage
 
+**Note**: We have an available service deployed online that accepts requests. To use it, just change the http://localhost:8000 url for https://rsfc.linkeddata.es
+
 Preferably in a virtual environment and in the root directory of the project, run the following to run the app:
 
 ```
@@ -67,7 +69,6 @@ curl -G "http://localhost:8000/tests?testid=https://w3id.org/rsfc/test/RSFC-01-1
 ```
 curl -X POST "http://localhost:8000/assess/test/RSFC-13-1" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer {your_token}" \
   -d '{
     "resource_identifier": "https://github.com/oeg-upm/rsfc"
   }'
