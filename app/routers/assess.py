@@ -12,10 +12,10 @@ async def post_test_assessment(test_identifier: str = Path(..., description="Ide
         raise HTTPException(status_code=404, detail="Test not found")
     else:
         if test_identifier in utils.TEST_IDENTIFIERS:
-            short_id = test_identifier.rstrip("/").rsplit("/", 1)[-1]
+            test_identifier = test_identifier.rstrip("/").rsplit("/", 1)[-1]
 
     try:
-        return await docker_executor.run_assessment(body.resource_identifier, short_id)
+        return await docker_executor.run_assessment(body.resource_identifier, test_identifier)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
