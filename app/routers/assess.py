@@ -8,7 +8,7 @@ router = APIRouter(prefix="/assess", tags=["api-controller"])
 
 @router.post("/test/{test_identifier:path}")
 async def post_test_assessment(test_identifier: str = Path(..., description="Identifier of the test to run"), body: ResourceAssessmentRequest = ...):
-    if test_identifier not in utils.TEST_IDENTIFIERS or test_identifier not in utils.TEST_SHORTIDS:
+    if test_identifier not in utils.TEST_IDENTIFIERS and test_identifier not in utils.TEST_SHORTIDS:
         raise HTTPException(status_code=404, detail="Test not found")
     else:
         if test_identifier in utils.TEST_IDENTIFIERS:
