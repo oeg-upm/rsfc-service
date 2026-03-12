@@ -10,6 +10,7 @@ A REST API to call RSFC (Research Software FAIRness Checks) via requests.
 - GET /metrics/{metricid}
 - GET /tests/{testid}
 - POST /assess/test/{test_identifier}
+- POST /assess/scoringAlgorithm
 
 # Requirements
 
@@ -27,7 +28,15 @@ git clone https://github.com/oeg-upm/rsfc-service.git
 
 ## Usage
 
-Preferably in a virtual environment and in the root directory of the project, run the following to run the app:
+The RSFC app needs a Github token to run. To use one, you need to configure a config.json file in the root of this project that looks like this:
+
+```
+{
+    "github_token" : "your_token"
+}
+```
+
+Then, you can (preferably in a virtual environment and in the root directory of the project) run the following to run the app:
 
 ```
 uvicorn app.main:app
@@ -64,6 +73,16 @@ curl -G "http://localhost:8000/tests?testid=https://w3id.org/rsfc/test/RSFC-01-1
 
 ```
 curl -X POST "http://localhost:8000/assess/test/https://w3id.org/rsfc/test/RSFC-13-1" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "resource_identifier": "https://github.com/oeg-upm/rsfc"
+  }'
+```
+
+- Perform an assessment on a repository for all the tests
+
+```
+curl -X POST "http://localhost:8000/assess/scoringAlgorithm" \
   -H "Content-Type: application/json" \
   -d '{
     "resource_identifier": "https://github.com/oeg-upm/rsfc"
