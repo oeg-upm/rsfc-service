@@ -1,23 +1,16 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List
 
 class ResourceAssessmentRequest(BaseModel):
-    resource_identifier: str
-    
-    
-class TestIdentifier(BaseModel):
-    identifier: str
+    resource_identifier: str = Field(
+        ...,
+        description="Identifier of the resource to assess",
+        example="https://github.com/oeg-upm/rsfc"
+    )
 
 
 class IndicatorIdentifier(BaseModel):
     identifier: str
-
-
-class TestInfo(BaseModel):
-    test_id: TestIdentifier
-    test_name: str
-    test_description: str
-    indicator_assessed: str
 
 
 class Assessment(BaseModel):
@@ -29,7 +22,3 @@ class Assessment(BaseModel):
     license: dict
     assessedSoftware: dict
     checks: list
-
-
-class TestIdentifierList(BaseModel):
-    identifiers: List[TestIdentifier]

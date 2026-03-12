@@ -1,7 +1,12 @@
 {
   "@context": "https://w3id.org/ftr/context",
-  "@id": "{{ benchmark_id }}",
+  "@id": "{{urn_score}}",
   "@type": "https://w3id.org/ftr#BenchmarkScore",
   "value": "{{ score }}",
-  "log": {{ log | tojson }}
+  "log": {{ log | tojson }},
+  "scoredTestResults": {
+    "@type": "https://w3id.org/ftr#TestResultSet",
+    "@id": "{{urn_results}}",
+    "hadMember": {{ checks | tojson }}
+  }
 }
