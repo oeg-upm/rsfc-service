@@ -20,9 +20,9 @@ async def post_test_assessment(test_identifier: str = Path(..., description="Ide
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/test/{test_identifier:path}")
+@router.get("/test/{test_identifier:path}", description="Method that returns how to do a POST request to /assess/test/{test_identifier}")
 async def get_test_assessment(
-    test_identifier: str = Path(..., description="Method that returns how to do a POST request to /assess/test/{test_identifier}")
+    test_identifier: str = Path(...)
 ):
     return {
         "message": "This endpoint only accepts POST requests.",
