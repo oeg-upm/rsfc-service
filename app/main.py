@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.routers import benchmarks, metrics, tests, assess
@@ -25,6 +26,10 @@ async def lifespan(app: FastAPI):
     print("Closing app...")
 
 
+origins = [
+    "https://rsfc.linkeddata.es"
+]
+
 app = FastAPI(
     title="RSFC API service",
     description="RSFC API service",
@@ -32,6 +37,13 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Loop to add every router
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 for router in [benchmarks, metrics, tests, assess]:
     app.include_router(router.router)
