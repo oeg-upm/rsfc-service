@@ -3,26 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.routers import benchmarks, metrics, tests, assess
-from app.helpers import docker_executor
-
-
-async def initialize_services():
-    try:
-        await docker_executor.pull_docker_image()
-    except Exception as e:
-        print(f"Error initializing services: {e}")
-        raise
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-
-    #Startup
+    # Startup
     print("Initializing app...")
-    await initialize_services()
     print("App initialized correctly.")
     yield
-    #Shutdown
+    # Shutdown
     print("Closing app...")
 
 

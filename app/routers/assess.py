@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Path, HTTPException
 from app.models import ResourceAssessmentRequest
 from app.data import utils
-from app.helpers import docker_executor, render_template
+from app.helpers import render_template, rsfc_executor
 
 router = APIRouter(prefix="/assess", tags=["api-controller"])
 
@@ -15,7 +15,7 @@ async def post_test_assessment(test_identifier: str = Path(..., description="Ide
             test_identifier = test_identifier.rstrip("/").rsplit("/", 1)[-1]
 
     try:
-        return await docker_executor.run_assessment(body.resource_identifier, test_identifier)
+        return await rsfc_executor.run_assessment(body.resource_identifier, test_identifier)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -36,11 +36,11 @@ async def get_test_assessment(
 async def post_test_assessment(body: ResourceAssessmentRequest = ...):
 
     try:
-        assessment = await docker_executor.run_assessment(body.resource_identifier, None)
+        assessment = await rsfc_executor.run_assessment(body.resource_identifier, None)
         
         test_results = assessment["hadMember"]
         total_tests = len(test_results)
-        passed_tests = sum(1 for test in test_results if test["value"] == "true")
+        passed_tests = sum(1 for test in test_results if test["value"] == "pass")
         score = round((passed_tests/total_tests)*100)
         log = f"Since you passed {passed_tests}/{total_tests} tests, your score is {score}%"
         
